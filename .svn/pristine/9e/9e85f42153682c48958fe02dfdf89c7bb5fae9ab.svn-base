@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Inserciones masivas</h1>
+<form id="insercionmasiva" method="POST" action='' >{%csrf_token%}
+<table border="1px">
+
+{{errores}}
+<tr>
+<td> Numero de fila a insertar </td>
+<td>  Nombre de exportacion </td> 
+<td>  Valor de exportacion </td>
+<td> Peso en kg </td>
+<td>  Pais donde se exporto </td>
+<td>  Mes del año </td>
+<td> Año </td></tr>
+{%for exportacion in exportaciones%}
+<tr><td>{{exportacion.6}}</td>
+<td>{{exportacion.0}}</td><td>{{exportacion.1}}</td>
+
+<td>{{exportacion.2}}</td><td>{{exportacion.3}}</td>
+<td>{{exportacion.4}}</td><td>{{exportacion.5}}</td></tr>
+{%endfor%}
+
+</table>
+
+<input type="submit" value="Ingresar los datos" action="">
+</body>
+</html>

@@ -1,0 +1,79 @@
+{% extends "base_admin.html" %}
+
+{%block contenido%}
+<form name="busqueda" method="POST" action='/consulta/' >{%csrf_token%}
+<cented>Eliminar o modificar Exportacion<cented>
+<div id="elegir" class="table-responsive">
+<table class="table table-hover">
+<tr>
+<td>
+Nombre Producto:</td><td> <input name="id_nombre_producto" type="text" placeholder="ingrese un nombre de producto" >   
+</td><td>
+Pais destino:</td><td> <select name="pais"><option value="todos">todos</option>
+{%for pais in paises%}
+<option>
+{{pais.nombre_pais}}
+</option>
+{%endfor%}
+</select >
+</tr>
+<tr><td>
+* Codigo Arancelario:</td><td><select name="producto">
+{% for producto in productos %}
+<option>
+{{producto.codigo_arancelario}}
+</option>
+
+
+{%endfor%}
+</select>
+</td>
+</tr>
+<tr>
+
+<td>
+Ingrese una fecha:</td><td>
+ Mes <select id="mes" name="mes"><option value="todos">todos</option>{% for mes in meses  %}
+<option>{{mes.nombre_mes}}</option>
+{% endfor %}
+</select></td><td>
+					* Año <select id="anio" name="anio">
+	{% for temporada in temporadas %} <option> {{ temporada.anio }}</option>
+	
+	{% endfor %}
+	
+	</select>
+</td></tr>
+</table>
+</div>
+<p>*obligatorios</p>
+<input type="submit" value="Comenzar busqueda">
+
+<table border="1px">
+Producto: 
+
+
+<tr><td>elija</td><td>pais destino</td><td>valor mercancia($)</td><td>Peso en (KG)</td><td>Mes de exportacion</td><td>Procesado</td>
+{%for exportacion in exportaciones%}
+<tr>
+
+<th>
+<input type="button" value="eliminar" >
+<input type="button" value="editar valores" >
+</th>
+<th>{{exportacion.codigo_pais_id__nombre_pais}} </th>
+<td> {{exportacion.costo_mercancia}}</th>
+<td>{{exportacion.peso_kilogramos}} </th>
+<th>{{exportacion.codigo_temporada_id__numero_mes_id__nombre_mes}}</th>
+<th>{{exportacion.codigo_producto_id__procesado}}</th>
+
+
+
+
+
+</tr>
+{%endfor%}
+</table>
+
+
+{%endblock%}

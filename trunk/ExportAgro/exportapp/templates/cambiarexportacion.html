@@ -1,0 +1,45 @@
+{% extends "base_admin.html" %}
+{%block contenido%}
+<script>
+function  validar(evt)
+{
+    evt = (evt) ? evt : window.event
+
+    	    var charCode = (evt.which) ? evt.which : evt.keyCode
+
+    	    if ((charCode==8 || charCode==46) ||(charCode>=48 && charCode<=57) ) {
+
+    	        status = "This field accepts numbers only."
+
+    	        return true
+
+    	    }
+
+    	    document.getElementById("comprueba").innerHTML="No valido";
+
+    	    return false
+}
+
+</script>
+
+<h1>Modificando Exportacion con id={{exportacion.id}}</h1>
+<form class="form-inline" role="form" method="POST" action='/actualizar/{{exportacion.id}}/'>{% csrf_token %}
+<div class="form-group">
+<label><h3>Nombre de producto:{{nombre_producto}}</h3></label>
+<table>
+
+<td>Tipo de producto: </td><td><input class="form-control transparent-input" type="text" value="{{tipo_producto}}" size="40" disabled ></td>
+</tr><tr>
+<td>Pais donde se exporto:</td><td><input class="form-control transparent-input" type="text" value="{{nombre_pais}}" size="50" disabled ></td>
+</tr><tr>
+
+<td>Valor monetario de las exportaciones a modificar:</td><td> $<input class="form-control transparent-input"  type="text" value="{{valor}}" disabled></td>
+
+<td>Valor en Kilogramos de las exportaciones a modificar:</td><td> Kg<input class="form-control transparent-input"  type="text" value="{{peso}}"  disabled></td>
+</tr>
+<tr><td> Valor Nuevo en dolares:</td><td><input name="valor" type="text" value="#####" size="10" onKeyPress="return validar(event)"> Punto para decimal</td> <td>Valor en peso nuevo</td><td><input name="peso" value="#####" size="10" type="text" onKeyPress="return validar(event)">Punto para decimal</td></tr>
+</table>
+</div>
+<input type="submit" value="Actualizar" >
+</form>
+{%endblock%}

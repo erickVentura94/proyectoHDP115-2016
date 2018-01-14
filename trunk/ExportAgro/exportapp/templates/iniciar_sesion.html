@@ -1,0 +1,48 @@
+{%extends 'base_admin.html'%}
+{% block title %}
+iniciar sesion
+{% endblock  %}
+{%block pestañas%}
+{%endblock%}
+{% if user.is_authenticated %}
+
+{{'Bienvenido'}} {{user.username}}
+{% endif %}
+{%block contenido%}
+
+<cented>
+  <div id="interno" class="panel-body">
+  
+  
+<div id="sse3">
+  <div id="sses3">
+    <h3>Iniciar sesion</h3>
+  <form class="form-horizontal alinear" action="." method="POST" aling="center">{% csrf_token %}
+                      <div id="sesion" >
+                      <div class="control-group">
+                        <span class="label label-pill label-warning">Usuario</span>
+                        <div class="controls">
+                          <input name="username" type="text" id="inputEmail" placeholder="Usuario">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <span class="label label-pill label-warning">contraseña</span>
+                        <div class="controls">
+                          <input name="password" type="password" id="inputPassword" placeholder="Contraseña">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <div class="controls">
+                       <br></div>
+                          <button type="submit" class="btn btn-info" action="/inicio/">Ingresar</button>
+                        </div>
+                      </div>
+                    </form>
+        </div>
+                      </div>
+</div>
+
+</cented>
+{%endblock%}

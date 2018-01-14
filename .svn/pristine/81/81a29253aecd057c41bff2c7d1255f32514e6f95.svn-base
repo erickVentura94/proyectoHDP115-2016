@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+function hola(a){
+	
+	
+	document.getElementById('ruta').value=a;
+	
+}
+
+</script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form id="masivo" method="POST" action='/verificar/'>{% csrf_token %}
+<input id="file" type="file" onChange="hola(this.value)" >
+<input id="ruta" name="ruta" type="text" value="" required=true>
+<input id="insertar" type="submit" value="verificar" >
+</form>
+
+</body>
+</html>

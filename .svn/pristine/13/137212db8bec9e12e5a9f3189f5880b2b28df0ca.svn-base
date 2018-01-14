@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+<title>{%block title%}Aqui va el titulo {%endblock%}</title>
+{%block script%} {%endblock%}
+                <link rel="shortcut icon" href="/static/imagenes/favicon.ico" />
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css">
+        <link href="/static/css/menustyle.css" rel="stylesheet" />
+        <link href="/static/css/galeria.css" rel="stylesheet" />
+	<script type="text/javascript" src="/static/js/menu.js"></script>
+	<script type="text/javascript" src="/static/js/slide.js"></script>
+</head>
+<body>
+{%block galeria%}
+
+<ul id="galeria" >
+
+<div id="espacio">
+<ul id="galeria">
+
+<center>
+<li><img src="/static/imagenes/zona.JPG" border="0" alt="imagen1" /></li>
+<li><img src="/static/imagenes/esa.png" border="0" alt="i2" /></li>
+<li><img src="/static/imagenes/cafe.jpg" border="0" alt="imagen3" /></li>
+</center>
+</ul>
+</div>
+{% endblock %}
+
+{% block menu %}
+<img class="logo" src="/static/imagenes/logo.jpg" border="0" alt="imagen1" />
+</ul>
+
+<div id="sse3">
+  <div id="sses3">
+    <ul>{%block pestañas%}
+      <li><a href="/">Resumen exportaciones</a></li>
+      <li><a href="">Consulta de exportaciones</a></li>
+      <li><a href="/modifica">Gestionar datos</a></li>
+      <li><a href="">Consultar Pronostico</a></li>
+      <li><a href="">Acerca de este sitio</a></li>
+{%endblock%}
+	  
+    </ul>
+  </div>
+</div>
+{%endblock%}
+{%block contenido%}
+<h1> Parte logica aca </h1>
+{% endblock %} 
+</body>
+</html>

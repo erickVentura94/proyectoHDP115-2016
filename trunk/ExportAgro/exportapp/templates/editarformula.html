@@ -1,0 +1,16 @@
+{% extends "base_admin.html" %}
+{%block contenido%}
+<form action="/registrarcoeficiente/" method="POST">{%csrf_token%}
+
+<h2>Editar formula</h2>
+<table class="table table-condensed">
+<tr class="success"><td>
+Valor actual:{{actual}}
+</td></tr><tr class="success"><td<h1>Ingrese el numero de meses a tomar en cuenta para el pronostico:</h1>
+<input type="text" name="valor" required=true>
+</td></tr><tr><td>
+<input type="submit" value="registrar valor">
+</td></tr>
+</table>
+
+{%endblock%}

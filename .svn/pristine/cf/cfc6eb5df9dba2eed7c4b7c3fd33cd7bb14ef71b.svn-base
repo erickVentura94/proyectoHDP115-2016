@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+{% block title %}
+iniciar sesion
+{% endblock  %}
+</head>
+<body>
+
+<p>Login</p>
+{% if user.is_authenticated %}
+
+{{'Bienvenido'}} {{user.username}}
+{% endif %}
+
+<form class="formulario_sesion" action='.' method="POST">{% csrf_token  %}
+<div id='sesion' >
+<input name="username" type="text" placeholder="Ingrese su nombre de usuario" >
+<input name="password" type="password" placeholder="ingrese su contraseña">
+<input name="aceptar" type="submit">
+</div>
+</form>
+
+
+</body>
+</html>

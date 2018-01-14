@@ -1,0 +1,24 @@
+{% extends "base_admin.html" %}
+{%block contenido%}
+<script >
+function hola(a){
+	
+	
+	document.getElementById('ruta').value=a;
+	
+}
+</script>
+
+<form id="masivo" method="POST" action='/verificar/'>{% csrf_token %}
+<p  class="text-sucess"> Para ingresar masivamente solamente ingrese su archivo cvs</p>
+<p class="text-success"> En el interior de la carpeta Entradas masivas en el interior</p>
+<p class="text-success"> de la aplicacion ya revisado y con el formato correcto</p>
+<p class="text-success"> luego seleccione el archivo en el interior de la carpeta </p>
+<div class="row-fluid">
+<input id="file" type="file" onChange="hola(this.value)" >
+<input id="ruta" name="rutas" type="text" value="" required=true>
+<input id="insertar" type="submit" value="verificar" >
+</div>
+{{exportacionesmasivas}}
+</form>
+{%endblock%}

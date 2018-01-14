@@ -1,0 +1,15 @@
+{% extends "base_admin.html" %}
+{%block contenido%}
+<p>Modificando Exportacion con id={{exportacion.id}}</p>
+<table>
+<tr><td>Nombre de producto:</td><td><input type="text" name="nombre" value="{{nombre_producto}}" disabled ></td>
+<td>Tipo de producto: </td><td><input type="text" value="{{tipo_producto}}" disabled ></td>
+</tr><tr>
+<td>Pais donde se exporto:</td><td><input type="text" value="{{nombre_pais}}" disabled ></td>
+</tr><tr>
+<td>Valor monetario de las exportaciones:</td><td> $<input type="text" value="{{valor}}" ></td>
+
+<td>Valor en Kilogramos de las exportaciones:</td><td> Kg<input type="text" value="{{peso}}" ></td>
+</tr>
+</table>
+{%endblock%}

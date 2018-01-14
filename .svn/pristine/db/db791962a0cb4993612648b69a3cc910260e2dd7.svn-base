@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{%block contenido%}
+<cented>Eliminar o modificar Exportacion<cented>
+<div id="elegir" class="table-responsive">
+<table class="table table-hover">
+<tr>
+<td>
+Nombre Producto:</td><td> <input name="id_nombre_producto" type="text" placeholder="ingrese un nombre de producto" >   
+</td><td>
+Pais destino:</td><td> <input type="text" name="id_nombre_pais" placeholder="ingrese un nombre de pais">
+</td>
+</tr><tr>
+<td>Codigo arancelario:</td><td> <input type="text" placeholder="ingrese un codigo arancelario" maxlength=8 >
+</td></tr><tr><td></td><td>
+Ingrese una fecha: <select id="mes">{% for mes in meses  %}
+<option>{{mes.nombre_mes}}</option>
+{% endfor %}
+</select></td><td>
+					<select id="anio">
+	{% for temporada in temporadas %} <option> {{ temporada.ano }}</option>
+	
+	{% endfor %}
+	
+	</select>
+</td></tr>
+</table>
+</div>
+<input type="submit" value="Comenzar busqueda">
+<input type="submit" value="Eliminar exportacion">
+<input type="submit" value="modificar exportacion">
+<table border="1px">
+<tr><td>elija</td><td>Nombre de producto</td><td>pais destino</td><td>valor mercancia($)</td><td>Peso en (KG)</td><td>fecha de exportacion</td><td>Procesado</td>
+<tr>
+
+</table>
+{{ temporadas.count }}
+{%endblock%}

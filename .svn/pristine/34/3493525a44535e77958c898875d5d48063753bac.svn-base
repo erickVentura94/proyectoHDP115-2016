@@ -1,0 +1,81 @@
+{% extends "base_admin.html" %}
+
+{%block contenido%}
+<form name="busqueda" method="POST" action='' >{%csrf_token%}
+<cented>Eliminar o modificar Exportacion<cented>
+<div id="elegir" class="table-responsive">
+<table class="table table-condensed">
+<tr>
+<td>
+
+Pais destino:</td><td> <select name="pais"><option value="todos">todos</option>
+{%for pais in paises%}
+<option>
+{{pais.nombre_pais}}
+</option>
+{%endfor%}
+</select >
+</tr>
+<tr class="danger"><td >
+* Codigo Arancelario:</td><td><select name="producto">
+{% for tipo_producto in tipo_productos %}
+<option>
+{{tipo_producto.nombre_tipo}}
+</option>
+
+
+{%endfor%}
+</select>
+</td>
+</tr>
+<tr class="warning">
+
+<td>
+Ingrese una fecha:</td><td>
+ Mes <select id="mes" name="mes"><option value="todos">todos</option>{% for mes in meses  %}
+<option>{{mes.nombre_mes}}</option>
+{% endfor %}
+</select></td><td>
+					* Año <select id="anio" name="anio">
+	{% for temporada in temporadas %} <option> {{ temporada.anio }}</option>
+	
+	{% endfor %}
+	
+	</select>
+</td></tr>
+</table>
+</div>
+<p>*obligatorios</p>
+<input type="submit" value="Comenzar busqueda" onclick=this.form.action="/consultamodifica/">
+
+<table  class="table table-condensed">
+<p>Producto elegido:{{producto_elegido}}</p>
+<p>Año elegido:{{anio_elegido}}</p>
+
+
+<tr ><td >Elija</td><td >Nombre del producto</td><td> Pais destino </td><td> Valor mercancia($) </td><td>Peso en (KG)</td><td>Mes de exportacion</td><td>Procesado</td>
+{%for exportacion in exportaciones%}
+<tr>
+
+<th>
+
+<input type="submit" value="eliminar" onclick=this.form.action="/eliminar/{{exportacion.id}}/" >
+<input type="submit" value="editar valores" onclick=this.form.action="/cambiar/{{exportacion.id}}/" >
+</th>
+<td class="danger">{{exportacion.codigo_producto_id__nombre_producto}}</td>
+<td >{{exportacion.codigo_pais_id__nombre_pais}} </td>
+<td class="success"> {{exportacion.costo_mercancia}}</td>
+<td>{{exportacion.peso_kilogramos}} </td>
+<td class="warning">{{exportacion.codigo_temporada_id__numero_mes_id__nombre_mes}}</td>
+<td>{{exportacion.codigo_producto_id__procesado}}</td>
+
+
+
+
+
+</tr>
+{%endfor%}
+</table>
+
+
+{%endblock%}

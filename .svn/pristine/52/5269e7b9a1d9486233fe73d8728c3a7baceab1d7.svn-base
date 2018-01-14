@@ -1,0 +1,3 @@
+class masivo:
+    productos=[]
+    

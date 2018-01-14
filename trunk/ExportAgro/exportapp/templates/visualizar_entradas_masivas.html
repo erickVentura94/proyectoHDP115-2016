@@ -1,0 +1,27 @@
+{% extends "base_admin.html" %}
+{%block contenido%}
+<form id="insercionmasiva" method="POST" action='/ingresardatos/' >{%csrf_token%}
+<table border="1px" class="table table-condensed">
+<input type="submit" value="Ingresar los datos" >
+{{errores}}
+<tr>
+<td> Numero de fila a insertar </td>
+<td >  codigo arancelario </td> 
+<td class="danger">  Valor de exportacion </td>
+<td> Peso en kg </td>
+<td class="success">  Pais donde se exporto </td>
+<td>  Mes del año </td>
+<td class="warning"> Año </td></tr>
+{%for exportacion in exportaciones%}
+<tr><td>{{exportacion.6}}</td>
+<td>{{exportacion.0}}</td><td class="danger">{{exportacion.1}}</td>
+
+<td>{{exportacion.2}}</td><td class="success">{{exportacion.3}}</td>
+<td>{{exportacion.4}}</td><td class="warning">{{exportacion.5}}</td></tr>
+{%endfor%}
+
+</table>
+ {{exportacionesmasivas}}
+
+
+{%endblock%}

@@ -1,0 +1,12 @@
+from django import forms
+from exportapp.models import pais,mes,tipo_producto,producto,temporada,exportacion,informacion_exportacion
+class PostForm(forms.ModelForm):
+    class Meta:
+        model=producto
+        fields=[
+                "codigo_arancelario",
+                "nombre_producto",
+                "procesado",
+                "tipo_producto"
+                
+                                ]

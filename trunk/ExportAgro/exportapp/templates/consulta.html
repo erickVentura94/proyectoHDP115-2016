@@ -1,0 +1,53 @@
+{% extends "base_admin.html" %}
+
+{%block contenido%}
+<cented>Consulta general<cented>
+<div id="consultar" class="table-responsive">
+<table class="table table-hover" >
+
+<tr> 
+<td>*Producto </td> <td> <select name="producto"> <option value="ninguno">Escoja algun producto</option>
+{%for producto in productos%}
+<option>
+{{producto.nombre_producto}}
+</option>
+{% endfor %}
+</select>
+</td>
+
+<td>* Año </td> <td><select name="anio"> <option value="ninguno">seleccione año</option>
+{%for temporada in temporadas%}
+<option>
+{{temporada.anio}}
+</option>
+{%endfor%}
+</select>
+</td>
+</tr>
+
+
+<tr>
+<td> Pais: </td><td> <select name="pais"> <option value="ninguno">seleccione pais </option>
+{%for pais in paises%}
+<option>
+{{pais.nombre_pais}}
+</option>
+{%endfor%}
+</select>
+</td>
+<td> Mes: </td><td> <select name="mes"> <option value="todos">Todos los meses </option>
+{%for mes in meses%}
+<option>
+{{mes.nombre_mes}}
+</option>
+{%endfor%}
+</select>
+</td>
+</tr>
+</table>
+<input type="submit" value="Consultar">
+
+
+</tr>
+
+{% endblock %}

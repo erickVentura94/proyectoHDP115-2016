@@ -1,0 +1,47 @@
+{% extends "base_admin.html" %}
+{%block contenido%}
+<h2>Ingresar individualmente</h2>
+<form action="/registrarexportacion/" method="POST">{%csrf_token%}
+<div class="alert alert-info">{{mensaje}}</div>)
+<table class="table table-condensed">
+
+<tr class="danger"><td>
+Eliga el nombre del producto<select name="producto">
+{%for producto in productos%}
+<option value="{{producto.codigo_arancelario}}">{{producto.nombre_producto}}</option>
+{%endfor%}
+</select></td>
+</tr>
+<tr class="danger"><td>
+seleccione el pais destino:<select name="pais">
+{%for pais in paises%}
+<option value="{{pais.id}}">{{pais.nombre_pais}}</option>
+{%endfor%}
+</select>
+
+</tr>
+<tr class="danger">
+<td>
+elija la fecha de la exportacion:
+</td>
+<td>año:</td>
+<td>
+<select name="anio">
+{%for anio in anios%}
+<option value="{{anio.anio}}">{{anio.anio}}</option>
+{%endfor%}
+</select>
+</td><td>
+mes:</td><td>
+<select name="mes">
+{%for mes in meses%}
+<option value="{{mes.id}}">{{mes.nombre_mes}}</option>
+{%endfor%}
+</select>
+</td></tr><tr class="danger">
+<td>costo mercancia:<input type="text" name="costo" required=true></td><td>Peso:<input type="text" name="peso" required=true></td>
+
+</tr><tr>
+<td><input type="submit" value="registrar exportacion"></td>
+</tr></table>
+{%endblock%}

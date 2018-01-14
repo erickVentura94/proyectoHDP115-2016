@@ -1,0 +1,215 @@
+from django.shortcuts import render
+from exportapp.models import pais,mes,tipo_producto,producto,temporada,informacion_exportacion
+# Create your views here.
+from django import forms
+from django.db.models import Sum,Avg
+from django.views.generic import ListView
+from django.template.context_processors import request
+from django.contrib import messages
+from audioop import avg
+from telnetlib import theNULL
+import csv
+from __builtin__ import enumerate
+from httplib import HTTP
+from django.http import HttpResponse
+
+
+
+def inicio(request):
+    return render(request,'index.html')
+def modificar(request):
+    meses=mes.objects.all()
+    temporadas=temporada.objects.all()
+    paises=pais.objects.all().order_by('nombre_pais')
+    tipo_productos=tipo_producto.objects.all().order_by('nombre_tipo')
+    
+    context= {'meses':meses,
+             'temporadas':temporadas,
+              'paises':paises,
+              'tipo_productos':tipo_productos
+             
+        
+             }
+             
+            
+    exportaciones1=informacion_exportacion.objects.all()
+    return render(request,'modificarExportacion.html',context)
+
+def consultar(request):
+    paises=pais.objects.all().order_by('nombre_pais')
+    meses=mes.objects.all()
+    temporadas=temporada.objects.all()
+    tipo_productos=tipo_producto.objects.all().order_by('nombre_tipo')
+    productos=producto.objects.all()
+    productos1=producto.objects.values("codigo_arancelario").order_by()
+    
+    
+    producto_elegido=request.POST.get('producto')
+    pais_elegido=request.POST.get('pais')
+    mes_elegido=request.POST.get('mes')
+    anio_elegido=request.POST.get('anio')
+    
+    if((pais_elegido=="todos" )& (mes_elegido=="todos")) :
+        
+     
+     exportaciones_elegidas=informacion_exportacion.objects.values('id','codigo_producto_id__nombre_producto','codigo_temporada_id__anio','codigo_pais_id__nombre_pais','codigo_temporada_id__numero_mes_id__nombre_mes','costo_mercancia','peso_kilogramos','codigo_producto_id__procesado').filter(codigo_producto_id__tipo_producto_id__nombre_tipo=producto_elegido).filter(codigo_temporada_id__anio=anio_elegido)
+    elif(pais_elegido=="todos") & (mes_elegido != "todos") :
+         exportaciones_elegidas=informacion_exportacion.objects.values('id','codigo_producto_id__nombre_producto','codigo_temporada_id__anio','codigo_pais_id__nombre_pais','codigo_temporada_id__numero_mes_id__nombre_mes','costo_mercancia','peso_kilogramos','codigo_producto_id__procesado').filter(codigo_producto_id__tipo_producto_id__nombre_tipo=producto_elegido).filter(codigo_temporada_id__anio=anio_elegido).filter(codigo_temporada_id__numero_mes_id__nombre_mes=mes_elegido)
+
+    elif(pais_elegido !="todos") & (mes_elegido=="todos"):
+        exportaciones_elegidas=informacion_exportacion.objects.values('id','codigo_producto_id__nombre_producto','codigo_temporada_id__anio','codigo_pais_id__nombre_pais','codigo_temporada_id__numero_mes_id__nombre_mes','costo_mercancia','peso_kilogramos','codigo_producto_id__procesado').filter(codigo_producto_id__tipo_producto_id__nombre_tipo=producto_elegido).filter(codigo_temporada_id__anio=anio_elegido).filter(codigo_pais_id__nombre_pais=pais_elegido)
+    else:
+       exportaciones_elegidas=informacion_exportacion.objects.values('id','codigo_producto_id__nombre_producto','codigo_temporada_id__anio','codigo_pais_id__nombre_pais','codigo_temporada_id__numero_mes_id__nombre_mes','costo_mercancia','peso_kilogramos','codigo_producto_id__procesado').filter(codigo_producto_id__tipo_producto_id__nombre_tipo=producto_elegido).filter(codigo_temporada_id__anio=anio_elegido).filter(codigo_temporada_id__numero_mes_id__nombre_mes=mes_elegido).filter(codigo_pais_id__nombre_pais=pais_elegido) 
+    
+     
+    
+    
+    context= {'paises':paises,
+              'meses':meses,
+              'temporadas':temporadas,
+              'tipo_productos': tipo_productos,
+              'productos':productos1,
+              'exportaciones':exportaciones_elegidas,
+              'producto_elegido':producto_elegido,
+              'anio_elegido':anio_elegido
+              }
+    
+    
+    return render(request,'modificarExportacion.html',context)
+
+def eliminar(request,id):
+    
+    informacion_exportacion.objects.get(id=id).delete()
+    
+    return render(request,'cambiarexportacion.html')
+def modificarexportacion(request,id):
+    exportacion=informacion_exportacion.objects.get(id=id)
+    nombre_producto=producto.objects.get(codigo_arancelario=exportacion.codigo_producto_id)
+    nombre_pais=pais.objects.get(id=exportacion.codigo_pais_id)
+    valor=exportacion.costo_mercancia
+    peso=exportacion.peso_kilogramos
+    tipo_productos=tipo_producto.objects.get(id=exportacion.codigo_temporada_id)
+    
+    context={
+             
+             'exportacion':exportacion,
+             'nombre_producto':nombre_producto,
+             'nombre_pais':nombre_pais,
+             'valor':valor,
+             'peso':peso,
+             'tipo_producto':tipo_productos
+             }
+    
+    
+    return render(request,'cambiarexportacion.html',context)
+
+## lo de abajo hay que borrarlo esto era una prueba
+
+def sesion(request):
+       return render(request, 'iniciar_sesion.html')
+   
+def ingresarmasivo(request):
+       return render(request,'insertarmasivamente.html')
+       
+
+
+
+
+def validar(request):
+    ruta=request.POST['ruta']
+    cadena = "Errores:"
+    
+    exportacion=[]
+    
+    reader=csv.reader(open('entradasmasivas/'+ruta,'r'))
+    for index,row in enumerate(reader):
+        if validar_entrada(row[0],row[1],row[2],row[3],row[4],row[5]):
+           exportacion.append([row[0],row[1],row[2],row[3],row[4],row[5],index])
+        else:
+            cadena=cadena+"\nerror en :"+"Fila:"+str(index)+"Fila no se mostrara para su insercion"
+        
+    context={
+             'exportaciones':exportacion,
+             'tamanio':len(exportacion),
+             'errores':cadena
+            }
+    
+    return render(request,'prueba.html',context)
+   
+##funcion para validar entradas masivas   
+def validar_entrada(mercancia,peso,valor,pais_elegido,mes_elegido,anio_elegido):
+    validar=True
+    try:
+        esquema=len(producto.objects.all().filter(nombre_producto=mercancia))
+        if esquema==0:
+            validar=False
+        
+    except ValueError:
+     validar= False
+    
+    try:
+        esquema1=len(pais.objects.all().filter(nombre_pais=pais_elegido))
+        if esquema1==0:
+            validar=False
+    except ValueError:
+        validar= False
+ 
+    try:
+         esquema2=len(mes.objects.all().filter(nombre_mes=mes_elegido))
+         if esquema2==0:
+             validar=False
+    except ValueError:
+         validar= False
+    try:
+         esquema3=len(temporada.objects.all().filter(anio=anio_elegido))
+         if esquema3==0:
+             validar=False
+    except ValueError:
+         validar= False
+    return validar
+######################################################
+def busqueda(request):
+    elegir_pais=request.POST['pais']
+    elegir_producto=request.POST['producto']
+    elegir_mes_s=request.POST['mes']
+    elegir_anio=request.POST['anio']
+    
+    
+    informacion_exportaciones=informacion_exportacion.objects.filter(id=1)
+    
+    context={
+                         'exportaciones':informacion_exportaciones
+                         }                
+
+    return render(request,'prueba.html',context)
+
+def top10(request):
+    suma=informacion_exportacion.objects.values('codigo_producto__tipo_producto__nombre_tipo').annotate(suma=Sum('costo_mercancia')).order_by('-suma')[:10]
+    sumaa=informacion_exportacion.objects.values('codigo_pais__nombre_pais').annotate(suma=Sum('costo_mercancia')).order_by('-suma')[:10]
+    return render(request,'index.html',{'suma0':suma[0],'suma1':suma[1],'suma2':suma[2],'suma3':suma[3],'suma4':suma[4],'suma5':suma[5],'suma6':suma[6],'suma7':suma[7],'suma8':suma[8],'suma9':suma[9],'sumaa0':sumaa[0],'sumaa1':sumaa[1],'sumaa2':sumaa[2],'sumaa3':sumaa[3],'sumaa4':sumaa[4],'sumaa5':sumaa[5],'sumaa6':sumaa[6],'sumaa7':sumaa[7],'sumaa8':sumaa[8],'sumaa9':sumaa[9]})
+
+
+
+
+
+def registrar_producto(request):
+    tipos=tipo_producto.objects.all()
+    
+    #lo que viene del formulario
+    tipo_elegido=request.POST.get('tipo_elegido')
+    producto_elegido=request.POST.get('producto')
+    cod_produc_elegido=request.POST.get('cod_arancelario')
+    procesado_elegido=request.POST.get('procesado')
+   
+    context={
+             'tipos':tipos,
+             'tipo_select':tipo_elegido,
+             'producto':producto_elegido,
+             'cod':cod_produc_elegido,
+             'procesa':procesado_elegido, 
+             }
+    
+    
+    
+    
+    return render(request,'registro_producto.html',context)

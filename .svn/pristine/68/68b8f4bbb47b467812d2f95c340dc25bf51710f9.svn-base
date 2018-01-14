@@ -1,0 +1,81 @@
+from django.shortcuts import render
+from exportapp.models import pais,mes,tipo_producto,producto,temporada,informacion_exportacion
+# Create your views here.
+from django import forms
+from django.db.models import Sum,Avg
+from django.views.generic import ListView
+from django.template.context_processors import request
+from django.contrib import messages
+from audioop import avg
+
+
+
+def inicio(request):
+    return render(request,'index.html')
+def modificar(request):
+    meses=mes.objects.all()
+    temporadas=temporada.objects.all()
+    paises=pais.objects.all()
+    tipo_productos=tipo_producto.objects.all()
+    productos=producto.objects.values("codigo_arancelario").order_by()
+    
+    context= {'meses':meses,
+             'temporadas':temporadas,
+              'paises':paises,
+              'tipo_productos':tipo_producto,
+              'productos':productos,
+        
+             }
+             
+            
+    exportaciones1=informacion_exportacion.objects.all()
+    return render(request,'modificarExportacion.html',context)
+
+def consultar(request):
+    paises=pais.objects.all()
+    meses=mes.objects.all()
+    temporadas=temporada.objects.all()
+    tipo_productos=tipo_producto.objects.all()
+    productos=producto.objects.all()
+    
+    context= {'paises':paises,
+              'meses':meses,
+              'temporadas':temporadas,
+              'tipo_productos': tipo_productos,
+              'productos':productos,
+              
+              }
+    
+    
+    return render(request,'consulta.html',context)
+    
+    
+    
+    
+
+## lo de abajo hay que borrarlo esto era una prueba
+
+def sesion(request):
+       return render(request, 'iniciar_sesion.html')
+   
+   
+   
+def busqueda(request):
+    elegir_pais=request.POST['pais']
+    elegir_producto=request.POST['producto']
+    elegir_mes_s=request.POST['mes']
+    elegir_anio=request.POST['anio']
+    
+    messages.error(request,"seleccione al menos un criterio")
+    informacion_exportaciones=informacion_exportacion.objects.filter(id=1)
+    
+    context={
+                         'exportaciones':informacion_exportaciones
+                         }                
+
+    return render(request,'prueba.html',context)
+
+def top10(request):
+    suma=informacion_exportacion.objects.values('codigo_producto').annotate(suma=Sum('costo_mercancia')).order_by('-suma')[:10]
+    
+    return render(request,'prueba.html',{'suma0':suma[0],'suma1':suma[1],'suma2':suma[2],'suma3':suma[3],'suma4':suma[4],'suma5':suma[5],'suma6':suma[6],'suma7':suma[7],'suma8':suma[8],'suma9':suma[9]})

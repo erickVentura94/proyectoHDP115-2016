@@ -1,0 +1,53 @@
+from django.shortcuts import render
+from exportapp.models import pais,mes,tipo_producto,producto,temporada,informacion_exportacion
+# Create your views here.
+from django import forms
+from django.views.generic import ListView
+from django.template.context_processors import request
+from django.contrib import messages
+
+
+def inicio(request):
+    return render(request,'index.html')
+def modificar(request):
+    meses=mes.objects.all()
+    temporadas=temporada.objects.all()
+    paises=pais.objects.all()
+    tipo_productos=tipo_producto.objects.all()
+    productos=producto.objects.values("codigo_arancelario").order_by()
+    
+    context= {'meses':meses,
+             'temporadas':temporadas,
+              'paises':paises,
+              'tipo_productos':tipo_producto,
+              'productos':productos
+             }
+             
+            
+    exportaciones1=informacion_exportacion.objects.all()
+    return render(request,'modificarExportacion.html',context)
+
+## lo de abajo hay que borrarlo esto era una prueba
+
+def sesion(request):
+       return render(request, 'iniciar_sesion.html')
+   
+   
+   
+def busqueda(request):
+    elegir_pais=request.POST['pais']
+    elegir_producto=request.POST['producto']
+    elegir_mes_s=request.POST['mes']
+    elegir_anio=request.POST['anio']
+    
+    messages.error(request,"seleccione al menos un criterio")
+    informacion_exportaciones=informacion_exportacion.objects.filter(id=1)
+    
+    context={
+                         'exportaciones':informacion_exportaciones
+                         }                
+
+    return render(request,'prueba.html',context)
+
+def top10(request):
+    informacion_exportacion.objects.filter()

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="/static/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="/static/dist/Chart.bundle.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var datos = {
+			type: "bar",
+			data : {
+				datasets :[{
+					data : [
+parseInt(document.getElementById('0').value),
+parseInt(document.getElementById('1').value),
+parseInt(document.getElementById('2').value),
+parseInt(document.getElementById('3').value),
+parseInt(document.getElementById('4').value),
+parseInt(document.getElementById('5').value),
+parseInt(document.getElementById('6').value),
+parseInt(document.getElementById('7').value),
+parseInt(document.getElementById('8').value),
+parseInt(document.getElementById('9').value),
+],
+					
+				}],
+				labels : [
+document.getElementById('a0').value,
+document.getElementById('a1').value,
+document.getElementById('a2').value,
+document.getElementById('a3').value,
+document.getElementById('a4').value,
+document.getElementById('a5').value,
+document.getElementById('a6').value,
+document.getElementById('a7').value,
+document.getElementById('a8').value,
+document.getElementById('a9').value
+				]
+			},
+			options : {
+				responsive : true,
+			}
+		};
+
+		var canvas = document.getElementById('chart').getContext('2d');
+		window.pie = new Chart(canvas, datos);
+
+		setInterval(function(){
+			datos.data.datasets.splice(0);
+			var newData = {
+				backgroundColor : [
+					"#F7464A",
+					"#46BFBD",
+					"#FDB45C",
+					"#949FB1",
+					"#4D5360",
+					"#FDB45C",
+					"#949FB1",
+					"#4D5360",
+					"#FDB45C",
+					"#949FB1"
+					
+				],
+					};
+
+			datos.data.datasets.push(newData);
+
+			window.pie.update();
+
+		}, 5000);
+
+
+
+		function getRandom(){
+			return Math.round(Math.random() * 100);
+		}
+
+
+	});
+	</script>
+</head>
+<body>
+	<div id="canvas-container" style="width:50%;">
+		<canvas id="chart" width="500" height="350"></canvas>
+	<input id="0" type="hidden" value="{{suma0.suma}}">
+	<input id="1" type="hidden" value="{{suma1.suma}}">
+	<input id="2" type="hidden" value="{{suma2.suma}}">
+<input id="3" type="hidden" value="{{suma3.suma}}">
+<input id="4" type="hidden" value="{{suma4.suma}}">
+<input id="5" type="hidden" value="{{suma5.suma}}">
+<input id="6" type="hidden" value="{{suma6.suma}}">
+<input id="7" type="hidden" value="{{suma7.suma}}">
+	<input id="8" type="hidden" value="{{suma8.suma}}">
+	<input id="9" type="hidden" value="{{suma9.suma}}">
+
+
+<input id="a0" type="hidden" value="{{suma0.codigo_producto}}">
+	<input id="a1" type="hidden" value="{{suma1.codigo_producto}}">
+	<input id="a2" type="hidden" value="{{suma2.codigo_producto}}">
+<input id="a3" type="hidden" value="{{suma3.codigo_producto}}">
+<input id="a4" type="hidden" value="{{suma4.codigo_producto}}">
+<input id="a5" type="hidden" value="{{suma5.codigo_producto}}">
+<input id="a6" type="hidden" value="{{suma6.codigo_producto}}">
+<input id="a7" type="hidden" value="{{suma7.codigo_producto}}">
+	<input id="a8" type="hidden" value="{{suma8.codigo_producto}}">
+	<input id="a9" type="hidden" value="{{suma9.codigo_producto}}">
+	
+	</div>
+</body>
+</html>

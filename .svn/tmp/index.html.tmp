@@ -1,0 +1,274 @@
+{% extends "base_admin.html" %}
+
+{%block script%}
+	<script type="text/javascript" src="/static/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="/static/dist/Chart.bundle.min.js"></script>
+	<script type="text/javascript">
+$(document).ready(function(){
+		
+		var datos = {
+			labels : [
+document.getElementById('c0').value,
+document.getElementById('c1').value,
+document.getElementById('c2').value,
+document.getElementById('c3').value,
+document.getElementById('c4').value,
+document.getElementById('c5').value,
+document.getElementById('c6').value,
+document.getElementById('c7').value,
+document.getElementById('c8').value,
+document.getElementById('c9').value,
+],
+			datasets : [{
+				label : "Calor en $",
+				backgroundColor : "rgba(220,220,220,0.5)",
+				data : [
+				       parseFloat(document.getElementById('b0').value),
+				       parseFloat(document.getElementById('b1').value),
+				       parseFloat(document.getElementById('b2').value),
+				       parseFloat(document.getElementById('b3').value),
+				       parseFloat(document.getElementById('b4').value),
+				       parseFloat(document.getElementById('b5').value),
+				       parseFloat(document.getElementById('b6').value),
+				       parseFloat(document.getElementById('b7').value),
+				       parseFloat(document.getElementById('b8').value),
+				       parseFloat(document.getElementById('b9').value),
+				       ]
+			}
+			]
+		};
+
+
+		var canvas = document.getElementById('chart').getContext('2d');
+		window.bar = new Chart(canvas, {
+			type : "bar",
+			data : datos,
+			options : {
+				elements : {
+					rectangle : {
+						borderWidth : 1,
+						borderColor : "rgb(0,255,0)",
+						borderSkipped : 'bottom'
+					}
+				},
+				responsive : true,
+				title : {
+					display : true,
+					text : "Paises de mayor exportacion"
+				}
+			}
+		});
+
+		setInterval(function(){
+			
+
+			$.each(datos.datasets, function(i, dataset){
+				dataset.data = newData[i];
+			});
+			window.bar.update();
+		}, 5000);
+
+		
+
+
+		function getRandom(){
+			return Math.round(Math.random() * 100);
+		}
+
+
+	});
+
+
+
+$(document).ready(function(){
+	
+	var datos = {
+		labels : [
+document.getElementById('a0').value,
+document.getElementById('a1').value,
+document.getElementById('a2').value,
+document.getElementById('a3').value,
+document.getElementById('a4').value,
+document.getElementById('a5').value,
+document.getElementById('a6').value,
+document.getElementById('a7').value,
+document.getElementById('a8').value,
+document.getElementById('a9').value,
+],
+		datasets : [{
+			label : "valor en $",
+			backgroundColor : "rgba(453,236,220,0.5)",
+			data : [
+			       parseFloat(document.getElementById('0').value),
+			       parseFloat(document.getElementById('1').value),
+			       parseFloat(document.getElementById('2').value),
+			       parseFloat(document.getElementById('3').value),
+			       parseFloat(document.getElementById('4').value),
+			       parseFloat(document.getElementById('5').value),
+			       parseFloat(document.getElementById('6').value),
+			       parseFloat(document.getElementById('7').value),
+			       parseFloat(document.getElementById('8').value),
+			       parseFloat(document.getElementById('9').value),
+			       ]
+		}
+		]
+	};
+
+
+	var canvas = document.getElementById('chart1').getContext('2d');
+	window.bar = new Chart(canvas, {
+		type : "bar",
+		data : datos,
+		options : {
+			elements : {
+				rectangle : {
+					borderWidth : 1,
+					borderColor : "rgb(0,255,0)",
+					borderSkipped : 'bottom'
+				}
+			},
+			responsive : true,
+			title : {
+				display : true,
+				text : "Productos de mayor exportacion"
+			}
+		}
+	});
+
+	setInterval(function(){
+		
+
+		$.each(datos.datasets, function(i, dataset){
+			dataset.data = newData[i];
+		});
+		window.bar.update();
+	}, 5000);
+
+	
+
+
+	function getRandom(){
+		return Math.round(Math.random() * 100);
+	}
+
+
+});
+
+
+
+	
+	
+	</script>
+{%endblock%}
+{%block menu%}
+
+<div id="sse3">
+  <div id="sses3">
+    <ul>
+      <li><a href="">Resumen exportaciones</a></li>
+      <li><a href="">Acerca de este sitio</a></li>
+  <form class="form-horizontal alinear" method="POST" aling="center">{% csrf_token %}
+                      <div class="control-group">
+                        <label class="control-label" for="inputEmail" >Usuario</label>
+                        <div class="controls">
+                          <input name="username" type="text" id="inputEmail" placeholder="Usuario">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <label class="control-label" for="inputPassword">Contraseña</label>
+                        <div class="controls">
+                          <input name="password" type="password" id="inputPassword" placeholder="Contraseña">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <div class="controls">
+                       <br><br>
+                          <button type="submit" class="btn btn-info" action="/inicio/">Ingresar</button>
+                        </div>
+                      </div>
+                    </form>
+        </div>
+                      </div>
+                    </form>
+
+
+	  
+    </ul>
+  </div>
+</div>
+
+
+
+{%endblock%}
+{%block contenido%}
+<h1> {{user.username}}</h1> 	
+  <br><br><br><br><br><br><br><br><br>
+
+
+<h1>Paises donde mas se exporta:</h1>
+	<div id="canvas-container" style="width:100%;">
+		<canvas id="chart1" width="1000" height="550"></canvas>
+		
+	<input id="0" type="hidden" value="{{suma0.suma}}">
+	<input id="1" type="hidden" value="{{suma1.suma}}">
+	<input id="2" type="hidden" value="{{suma2.suma}}">
+<input id="3" type="hidden" value="{{suma3.suma}}">
+<input id="4" type="hidden" value="{{suma4.suma}}">
+<input id="5" type="hidden" value="{{suma5.suma}}">
+<input id="6" type="hidden" value="{{suma6.suma}}">
+<input id="7" type="hidden" value="{{suma7.suma}}">
+	<input id="8" type="hidden" value="{{suma8.suma}}">
+	<input id="9" type="hidden" value="{{suma9.suma}}">
+
+
+<input id="a0" type="hidden" value="{{suma0.codigo_producto__tipo_producto__nombre_tipo}}">
+	<input id="a1" type="hidden" value="{{suma1.codigo_producto__tipo_producto__nombre_tipo}}">
+	<input id="a2" type="hidden" value="{{suma2.codigo_producto__tipo_producto__nombre_tipo}}">
+<input id="a3" type="hidden" value="{{suma3.codigo_producto__tipo_producto__nombre_tipo}}">
+<input id="a4" type="hidden" value="{{suma4.codigo_producto__tipo_producto__nombre_tipo}}">
+<input id="a5" type="hidden" value="{{suma5.codigo_producto__tipo_producto__nombre_tipo}}">
+<input id="a6" type="hidden" value="{{suma6.codigo_producto__tipo_producto__nombre_tipo}}">
+<input id="a7" type="hidden" value="{{suma7.codigo_producto__tipo_producto__nombre_tipo}}">
+	<input id="a8" type="hidden" value="{{suma8.codigo_producto__tipo_producto__nombre_tipo}}">
+	<input id="a9" type="hidden" value="{{suma9.codigo_producto__tipo_producto__nombre_tipo}}">
+	<div class="info" ><p><b>El flujo de exportacion en los ultimos 3 años se observa que el producto: {{suma0.codigo_producto__tipo_producto__nombre_tipo}}</b></p><p><b> 
+	
+	ha sido considerado como el producto con mas relevancia con el valor de ${{suma0.suma}}  .Esto indica que este 
+	producto </b></p><b>
+	ofrese mayores oportunidades para El salvador</b></div>
+	</div>
+	
+	<h1>Productos mas exportados:</h1>
+	
+			<div id="canvas-container" style="width:100%;">
+		<canvas id="chart" width="1000" height="550"></canvas>
+	<input id="c0" type="hidden" value="{{sumaa0.codigo_pais__nombre_pais}}">
+	<input id="c1" type="hidden" value="{{sumaa1.codigo_pais__nombre_pais}}">	
+		<input id="c2" type="hidden" value="{{sumaa2.codigo_pais__nombre_pais}}">
+		<input id="c3" type="hidden" value="{{sumaa3.codigo_pais__nombre_pais}}">
+		<input id="c4" type="hidden" value="{{sumaa4.codigo_pais__nombre_pais}}">
+			<input id="c5" type="hidden" value="{{sumaa5.codigo_pais__nombre_pais}}">
+			<input id="c6" type="hidden" value="{{sumaa6.codigo_pais__nombre_pais}}">
+			<input id="c7" type="hidden" value="{{sumaa7.codigo_pais__nombre_pais}}">
+				<input id="c8" type="hidden" value="{{sumaa8.codigo_pais__nombre_pais}}">
+				<input id="c9" type="hidden" value="{{sumaa9.codigo_pais__nombre_pais}}">
+	
+	<input id="b0" type="hidden" value="{{sumaa0.suma}}">
+	<input id="b1" type="hidden" value="{{sumaa1.suma}}">
+		<input id="b2" type="hidden" value="{{sumaa2.suma}}">
+			<input id="b3" type="hidden" value="{{sumaa3.suma}}">
+				<input id="b4" type="hidden" value="{{sumaa4.suma}}">
+					<input id="b5" type="hidden" value="{{sumaa5.suma}}">
+						<input id="b6" type="hidden" value="{{sumaa6.suma}}">
+							<input id="b7" type="hidden" value="{{sumaa7.suma}}">
+								<input id="b8" type="hidden" value="{{sumaa8.suma}}">
+									<input id="b9" type="hidden" value="{{sumaa9.suma}}">
+	
+	<p><b>Los paises que tienen un fuerte auge de exportacion estan representados porlo cual</b></p>
+	<p><b>se observa que el pais que mas importaciones asociadas a El salvador es el pais:{{sumaa0.codigo_pais__nombre_pais}}</b></p>
+	<p><b>con un valor de ${{sumaa0.suma}} en el rango de los ultimos años</b></p></div>
+			
+	{%endblock%}
+
